@@ -18,11 +18,12 @@ public class ItemRepository
     //Adds an Item
     public async Task CreateItemAsync(Item item)
     {
-        if (string.IsNullOrWhiteSpace(item.ImageUrl))
+        if (string.IsNullOrWhiteSpace(item.ItemUrl))
         {
-            item.ImageUrl = "https://pixabay.com/vectors/red-circle-backslash-no-symbol-24018/"; 
+            item.ItemUrl = "https://pixabay.com/vectors/red-circle-backslash-no-symbol-24018/"; 
         }
 
+        
         if (string.IsNullOrWhiteSpace(item.Description))
         {
             item.Description = "No Description";
@@ -40,6 +41,7 @@ public class ItemRepository
         {
             item.Status = "Active";
         }
+        
 
         _context.Items.Add(item);
         await _context.SaveChangesAsync();

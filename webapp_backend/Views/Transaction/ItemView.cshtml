@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "ItemView";
+}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+@model Item
+
+<div class="text-center">
+    <h1 class="display-4">@Model.Name</h1>
+</div>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .item-image {
+            max-width: 100%;
+            max-height: 400px; /* Set a max height to ensure it's not too large */
+            width: auto; /* Maintain the aspect ratio */
+            height: auto;
+            display: block; /* Remove any extra space below the image */
+            margin: 0 auto; /* Center the image if needed */
+        }
+    </style>
+</head>
+
+<div class="container" id="item-container">
+    <img src="@Model.ItemUrl" alt="@Model.Name" class="item-image">    
+    <p>Price: $@Model.Price</p>
+    <p> Description: @Model.Description </p>
+    <p> Status: @Model.Status </p>
+</div>
+
+<script>
+    $(document).ready(function()
+    {
+
+    })
+</script>
