@@ -1,0 +1,62 @@
+﻿@{
+	ViewData["Title"] = "Registration";
+}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<div clas="text-center">
+	<h1>Register New User Account</h1>
+</div>
+
+<form id="register-form">
+    <label for="email"><b>Email:</b></></label>
+    <input id="email" type="email" placeholder="Enter Email" name="email" required />
+    <p>
+    </p>
+
+    <label for="uname"><b>Username:</b></></label>
+    <input id="uname" type="text" placeholder="Enter Username" name="uname" required />
+    <p>
+    </p>
+
+    <label for="psw"><b>Password:</b></label>
+    <input id="psw" type="password" placeholder="Enter Password" name="psw" required />
+    <p>
+    </p>
+
+    <button id="submit-form" type="button">Register</button>
+</form>
+
+<p id="message"></p>
+
+<script>
+    $(document).ready(function() {
+        console.log("Hi");
+
+        $("#submit-form").click(function() {
+            console.log("argh");
+
+           var user = {
+                username: $("#uname").val(),
+                email: $("#email").val(),
+                password: $("#psw").val()
+            } 
+
+             $.ajax({
+                type: "POST",
+                url:'@Url.Action("register", "user")',
+                contentType: "application/json",
+                data: JSON.stringify(user),
+                dataType: "json",
+                success: function(response) {
+                    $("#message").text(response.message).css("color","green");
+                    console.log('Success response: ', response);
+                },
+                error: function(xhr) {
+                    $("#message").text(xhr.responseJSON.message).css("color", "red");
+                    console.log("error response: ", xhr.responseJSON);
+                }
+            })
+        })
+    });
+</script>
