@@ -75,8 +75,9 @@ public class UserController : Controller
 
         var user = JsonSerializer.Deserialize<User>(userJson);
         return Ok(user);
-    } 
+    }
 
+    [HttpGet]
     public IActionResult Logout()
     {
         HttpContext.Session.Remove("LoggedInUser");
