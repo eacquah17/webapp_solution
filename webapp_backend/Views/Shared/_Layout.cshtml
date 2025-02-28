@@ -26,6 +26,16 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
+
+                    <form id="viewForm" method="get" action="/user/changeView">
+                        <select id="userViewDropdown" name="viewId" onchange="this.form.submit()">
+                            <option value="">User</option>
+                            <option value="1">Login</option>
+                            <option value="2">Edit Profile</option>
+                            <option value="3">Log Out</option>
+                            <option value="4">Register</option>
+                        </select>
+                    </form>
                 </div>
             </div>
         </nav>

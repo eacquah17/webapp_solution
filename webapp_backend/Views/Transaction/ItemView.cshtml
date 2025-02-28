@@ -27,14 +27,27 @@
 
 <div class="container" id="item-container">
     <img src="@Model.ItemUrl" alt="@Model.Name" class="item-image">    
-    <p>Price: $@Model.Price</p>
+    <p>Price: </p><p id="price">$@Model.Price</p>
     <p> Description: @Model.Description </p>
     <p> Status: @Model.Status </p>
 </div>
 
+<button id="buy-item" type="button"> Buy Item</button>
+
 <script>
     $(document).ready(function()
     {
+        $("#buy-item").click(function()
+        {
+            var item = {
+                price: $("#price").val
 
+            }
+
+            $.ajax({
+                type:"POST"
+                url: '@Url.Action()'
+            })
+        })
     })
 </script>

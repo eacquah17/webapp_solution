@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
-/* Adding session services with SQL Server storage
+// Adding session services with SQL Server storage
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
@@ -19,7 +19,7 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
-*/
+
 
 // Getting connection string from appsettings.json
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -30,6 +30,7 @@ options.UseSqlServer(connectionString));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddScoped<ItemRepository>();
 builder.Services.AddScoped<TransactionService>();
@@ -39,9 +40,10 @@ builder.Services.AddScoped<UserService>();
 
 var app = builder.Build();
 
-/*
+
 app.UseSession(); //Enable session management
 
+/*
 app.MapGet("/", async httpContext =>
 {
     //Store data in session 
@@ -52,10 +54,10 @@ app.MapGet("/", async httpContext =>
 app.MapGet("/get-session", async httpContext =>
 {
     //Retrieve session data 
-    var user = httpContext.Session.GetString("UserName") ?? "No session found";
+    var user = httpContext.Session.GetString("LoggedInUser") ?? "No session found";
     await httpContext.Response.WriteAsync($"User: {user}");
-});
-*/
+}); */
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

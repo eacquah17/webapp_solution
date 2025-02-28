@@ -22,10 +22,11 @@ namespace webapp_backend.Controllers
         /*
         public IActionResult GetSession()
         {
-            var user = HttpContext.Session.GetString("UserName") ?? "No session found";
+            var user = HttpContext.Session.GetString("LoggedInUser") ?? "No session found";
             return Content($"User: {user}");
         } */
 
+        /*
         [HttpGet]
         public ActionResult Login()
         {
@@ -36,13 +37,13 @@ namespace webapp_backend.Controllers
         public ActionResult Registration()
         {
             return View();
-        }
+        } 
 
         [HttpGet]
         public ActionResult PasswordRecovery()
         {
             return View();
-        }
+        } */
 
         public IActionResult Privacy()
         {
