@@ -1,0 +1,36 @@
+﻿@{
+}
+
+@model User 
+
+<div clas="text-center">
+    <h1> Edit User Profile </h1>
+</div>
+
+<form id="register-form">
+    <label for="balance"><b>Balance:</b></></label>
+    <p> @Model.Balance</p>
+
+    <label for="email"><b>Email:</b></></label>
+    <p>@Model.Email</p>
+    <input id="email" placehoder="New Email"/>
+    <p></p>
+
+    <label for="uname"><b>Username:</b></></label>
+    <p>@Model.Username</p>
+    <input id="uname" placeholder="New Username"/>
+    <p></p>
+
+    <label><b>Password Change:</b></label>
+    <p></p>
+    <input id="old-psw" type="password" placeholder="Enter Old Password" name="psw" required />
+    <p></p>
+    <input id="new-psw" type="password" placeholder="Enter New Password" name="psw" required />
+    <p></p>
+    <input id="confirm-psw" type="password" placeholder="Confirm New Password" name="psw" required />
+    <p></p>
+
+    <button id="submit-form" type="button">Save Changes</button>
+</form>
+
+<p id="message"></p>

@@ -27,27 +27,39 @@
 
 <div class="container" id="item-container">
     <img src="@Model.ItemUrl" alt="@Model.Name" class="item-image">    
-    <p>Price: </p><p id="price">$@Model.Price</p>
+    <p>Price: $@Model.Price</p>
     <p> Description: @Model.Description </p>
     <p> Status: @Model.Status </p>
 </div>
 
+<input type="hidden" id="itemData" value='@Html.Raw(Json.Serialize(Model))' />
+
 <button id="buy-item" type="button"> Buy Item</button>
+<p id="message"></p>
 
 <script>
-    $(document).ready(function()
-    {
-        $("#buy-item").click(function()
-        {
-            var item = {
-                price: $("#price").val
+    $(document).ready(function () {
+        $("#buy-item").click(function () {
 
-            }
+            var item = JSON.parse(document.getElementById("itemData").value);
+
+            console.log(item);
 
             $.ajax({
-                type:"POST"
-                url: '@Url.Action()'
-            })
-        })
-    })
+                type: "POST",
+                url: '@Url.Action("itemTransaction", "item")',
+                contentType: "application/json",
+                data: JSON.stringify(item),
+                dataType: "json",
+                success: function (response) {
+                    $("#message").text(response.message).css("color", "green");
+                    console.log('Success response: ', response);
+                },
+                error: function (xhr) {
+                    $("#message").text(xhr.responseJSON.message).css("color", "red");
+                    console.log("error response: ", xhr.responseJSON);
+                }
+            });
+        });
+    });
 </script>

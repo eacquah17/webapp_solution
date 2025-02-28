@@ -1,14 +1,29 @@
 ﻿
 using System.Runtime.InteropServices.Marshalling;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 
 public class UserService
 {
     private readonly UserRepository _userRepository;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public UserService(UserRepository userRepository)
+    public UserService(UserRepository userRepository, IHttpContextAccessor httpContextAccessor)
     {
         _userRepository = userRepository;
+        _httpContextAccessor = httpContextAccessor;
+    }
+
+    public User GetUserFromSession()
+    {
+        var userJson = _httpContextAccessor.HttpContext.Session.GetString("LoggedInUser");
+        if (string.IsNullOrEmpty(userJson))
+        {
+            return null; // No user in session
+        }
+         
+        // Deserialize the JSON to a User object
+        return JsonSerializer.Deserialize<User>(userJson);
     }
 
     //Creates New User 
@@ -34,7 +49,7 @@ public class UserService
         await _userRepository.CreateUserAsync(user);
     }
 
-    public async Task AuthenticateUserAsync(User user)
+    public async Task<User> AuthenticateUserAsync(User user)
     {
         if (user == null)
             throw new ArgumentNullException(nameof(user), "User data cannot be null");
@@ -51,11 +66,19 @@ public class UserService
                 throw new UnauthorizedAccessException("This Password is Incorrect.");
             }
         }
+
+        return existingUsername; 
     }
+/*
+    public async Task DeleteUserAsync(User user)
+    {
+
+    }*/
 
     //Updates User Information NOT FINISHED 
     public async Task ChangeUserInfoAsync(User user)
     {
+        /*
         if (string.IsNullOrWhiteSpace(user.Username))
         {
             throw new ArgumentException("a username is required");
@@ -64,16 +87,11 @@ public class UserService
         if (string.IsNullOrWhiteSpace(user.Email))
         {
             throw new ArgumentException("an email is required");
-        }
+        } */
+
         await _userRepository.UpdateUserAsync(user);
     }
 
-    /*Logging in User
-    public async Task LoginUser(User user, string username, string enteredPassword)
-    {
-        if (username == user.Username)
-        if (password == user.Password)
-    }
-    */
+
 
 }

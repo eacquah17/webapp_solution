@@ -16,22 +16,46 @@ public class UserController : Controller
     }
 
     [HttpGet("changeView")]
-    public IActionResult ChangeView (int viewId)
+    public IActionResult ChangeView(int viewId)
     {
+        var user = _userService.GetUserFromSession();
+
         switch (viewId)
         {
             case 1:
-                return View("Login");
+                if (user != null)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    return View("Login");
+                }
             case 2:
-                return View("UserProfile");
+                if (user == null)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    return View("ProfileView", user);
+                }
             case 3:
                 // needs to call a function instead that logs the user out 
-                return Logout();
+                Logout();
+                return RedirectToAction("Index", "Home");
             case 4:
-                return View("Registration");
+                if (user != null)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    return View("Registration");
+                }
 
             default:
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Home");
         }
     }
 
@@ -53,8 +77,8 @@ public class UserController : Controller
     {
         try
         {
-            await _userService.AuthenticateUserAsync(user);
-            HttpContext.Session.SetString("LoggedInUser", JsonSerializer.Serialize(user));
+            var authenticatedUser = await _userService.AuthenticateUserAsync(user);
+            HttpContext.Session.SetString("LoggedInUser", JsonSerializer.Serialize(authenticatedUser));
             return Ok(new { message = "User logged in successfully" });
         }
         catch (Exception ex)
@@ -62,25 +86,19 @@ public class UserController : Controller
             return BadRequest(new { message = ex.Message });
         }
     }
-
   
-    [HttpGet]
-    public IActionResult GetUserFromSession()
+    
+
+    
+    /*
+    private void DeleteUserAccount()
     {
-        var userJson = HttpContext.Session.GetString("LoggedInUser");
-        if (string.IsNullOrEmpty(userJson))
-        {
-            return Unauthorized("No user is logged in.");
-        }
-
-        var user = JsonSerializer.Deserialize<User>(userJson);
-        return Ok(user);
-    }
-
-    [HttpGet]
-    public IActionResult Logout()
+        var user = _userService.GetUserFromSession();
+        
+    } */
+    private void Logout()
     {
         HttpContext.Session.Remove("LoggedInUser");
-        return Ok(new { message = "Logged out successfully!" });
+        HttpContext.Session.Clear();
     }
 }

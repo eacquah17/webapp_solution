@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace webapp_backend.Controllers;
 
@@ -7,10 +8,12 @@ namespace webapp_backend.Controllers;
 public class TransactionController : Controller
 {
     private readonly TransactionService _transactionService;
+    private readonly UserService _userService;
 
-    public TransactionController(TransactionService transactionService)
+    public TransactionController(TransactionService transactionService, UserService userService)
     {
         _transactionService = transactionService;
+        _userService = userService;
     }
 
     
@@ -22,7 +25,7 @@ public class TransactionController : Controller
         return Ok(items);
     }
 
-    [HttpGet("ItemView/{id}")]
+    [HttpGet("itemView/{id}")]
     public async Task<IActionResult> ItemView(int id)
     {
 
@@ -35,10 +38,19 @@ public class TransactionController : Controller
         return View(item);
     }
 
-    /*
-    [HttpPost("buyItem")]
-    public async Task<IActionResult> BuyItem(User user, Item item)
+    
+    [HttpPost("itemTransaction")]
+    public async Task<IActionResult> ItemTransaction([FromBody] Item item)
     {
-        await _transactionService.BuyItem(User )
-    } */
+
+        try
+        {
+            var updatedUser = await _transactionService.ProcessTransaction(item);
+            HttpContext.Session.SetString("LoggedInUser", JsonSerializer.Serialize(updatedUser));
+            return Ok(new {message = "Item bought successfully."});
+        } catch (Exception ex)
+        {
+            return BadRequest(new {message = ex.Message });
+        }
+    } 
 }

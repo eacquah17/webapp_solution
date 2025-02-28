@@ -29,7 +29,7 @@
 
                     <form id="viewForm" method="get" action="/user/changeView">
                         <select id="userViewDropdown" name="viewId" onchange="this.form.submit()">
-                            <option value="">User</option>
+                            <option value="" hidden><!--User's Username will go here--></option>
                             <option value="1">Login</option>
                             <option value="2">Edit Profile</option>
                             <option value="3">Log Out</option>
@@ -54,6 +54,11 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        window.onload = function() {
+            document.getElementById("userViewDropdown").selectedIndex = 0;
+        }
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

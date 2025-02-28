@@ -31,6 +31,7 @@ options.UseSqlServer(connectionString));
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<ItemRepository>();
 builder.Services.AddScoped<TransactionService>();
@@ -42,22 +43,6 @@ var app = builder.Build();
 
 
 app.UseSession(); //Enable session management
-
-/*
-app.MapGet("/", async httpContext =>
-{
-    //Store data in session 
-    httpContext.Session.SetString("UserName", "");
-    await httpContext.Response.WriteAsync("Session stored in memory!");
-});
-
-app.MapGet("/get-session", async httpContext =>
-{
-    //Retrieve session data 
-    var user = httpContext.Session.GetString("LoggedInUser") ?? "No session found";
-    await httpContext.Response.WriteAsync($"User: {user}");
-}); */
-
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
